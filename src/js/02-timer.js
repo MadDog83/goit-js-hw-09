@@ -13,6 +13,8 @@ const [input, button, timer, ...fields] = [
   ".field .value",
 ].map(selector => document.querySelector(selector));
 
+button.disabled = true;
+
 // Створюємо змінну для ідентифікатора інтервалу
 let intervalId = null;
 
