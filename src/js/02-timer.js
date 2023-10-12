@@ -40,7 +40,7 @@ const options = {
       button.setAttribute("data-endtime", selectedDate.getTime());
     } else {
       // Показуємо повідомлення про помилку
-      Notiflix.Notify.Failure('Please choose a date in the future');
+      Notiflix.Notify.failure('Please choose a date in the future');
     }
   },
 };
