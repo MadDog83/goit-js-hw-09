@@ -3,28 +3,30 @@ function createPromise(position, delay) {
     const shouldResolve = Math.random() > 0.3;
     setTimeout(() => {
       if (shouldResolve) {
-        resolve({ position: position, delay: delay });
+        resolve({position, delay });
       } else {
-        reject({ position: position, delay: delay, error: true });
+        reject({position, delay });
       }
     }, delay);
   });
 }
 
-document.querySelector('.form').addEventListener('submit', async (event) => {
+document.querySelector('.form').addEventListener('submit', (event) => {
   event.preventDefault();
   const delay = Number(event.target.elements.delay.value);
   const step = Number(event.target.elements.step.value);
   const amount = Number(event.target.elements.amount.value);
   
   for (let i = 1; i <= amount; i++) {
-    try {
-      await createPromise(i, delay + step * (i - 1));
-      Notiflix.Notify.success(`✅ Fulfilled promise ${i} in ${delay + step * (i - 1)}ms`);
-    } catch ({ position, delay, error }) {
-      if (error) {
+    createPromise(i, delay + step * (i - 1))
+      .then(({ position, delay }) => {
+        Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+      })
+      .catch(({ position, delay }) => {
         Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-      }
-    }
+      });
   }
+
+  // Очищаємо форму
+  event.target.reset();
 });
