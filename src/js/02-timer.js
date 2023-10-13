@@ -90,10 +90,13 @@ function updateTimer({ days = '00', hours = '00', minutes = '00', seconds = '00'
     timer.textContent = timeString;
 }
 
-/// Функція для запуску таймера
+// Функція для запуску таймера
 function startTimer() {
   // Отримуємо кінцевий час з атрибута кнопки
   const endTime = Number(button.getAttribute("data-endtime"));
+
+  // Робимо кнопку "Start" неактивною
+  button.disabled = true;
 
   // Створюємо функцію для виконання на кожному кроці інтервалу
   function step() {
@@ -111,8 +114,6 @@ function startTimer() {
           updateTimer({});
           // Робимо поле введення активним
           input.disabled = false;
-          // Робимо кнопку "Start" неактивною
-          button.disabled = true;
       }
   }
 
