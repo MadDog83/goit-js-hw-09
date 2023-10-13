@@ -38,6 +38,8 @@ const options = {
       button.disabled = false;
       // Зберігаємо обрану дату в атрибуті кнопки
       button.setAttribute("data-endtime", selectedDate.getTime());
+      // Додаємо код для деактивації поля введення
+      input.disabled = true;
     } else {
       // Показуємо повідомлення про помилку
       Notiflix.Notify.failure('Please choose a date in the future');
@@ -88,33 +90,37 @@ function updateTimer({ days = '00', hours = '00', minutes = '00', seconds = '00'
     timer.textContent = timeString;
 }
 
-// Функція для запуску таймера
+/// Функція для запуску таймера
 function startTimer() {
-    // Отримуємо кінцевий час з атрибута кнопки
-    const endTime = Number(button.getAttribute("data-endtime"));
+  // Отримуємо кінцевий час з атрибута кнопки
+  const endTime = Number(button.getAttribute("data-endtime"));
 
-    // Створюємо функцію для виконання на кожному кроці інтервалу
-    function step() {
-        // Обчислюємо залишок часу до кінцевого часу в мілісекундах
-        const deltaTime = endTime - Date.now();
-        const time = convertMs(deltaTime);
+  // Створюємо функцію для виконання на кожному кроці інтервалу
+  function step() {
+      // Обчислюємо залишок часу до кінцевого часу в мілісекундах
+      const deltaTime = endTime - Date.now();
+      const time = convertMs(deltaTime);
 
-        updateTimer(time);
+      updateTimer(time);
 
-        if (deltaTime <= 0) {
-            // Зупиняємо таймер
-            clearInterval(intervalId);
-            intervalId = null;
-            // Оновлюємо інтерфейс таймера до 00:00:00:00
-            updateTimer({});
-        }
-    }
+      if (deltaTime <= 0) {
+          // Зупиняємо таймер
+          clearInterval(intervalId);
+          intervalId = null;
+          // Оновлюємо інтерфейс таймера до 00:00:00:00
+          updateTimer({});
+          // Робимо поле введення активним
+          input.disabled = false;
+          // Робимо кнопку "Start" неактивною
+          button.disabled = true;
+      }
+  }
 
-    // Викликаємо функцію кроку один раз перед запуском інтервалу
-    step();
+  // Викликаємо функцію кроку один раз перед запуском інтервалу
+  step();
 
-    // Запускаємо інтервал з кроком в одну секунду
-    intervalId = setInterval(step, 1000);
+  // Запускаємо інтервал з кроком в одну секунду
+  intervalId = setInterval(step, 1000);
 }
 
 // Додаємо слухача події на кнопку "Start"
