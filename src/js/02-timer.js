@@ -38,8 +38,6 @@ const options = {
       button.disabled = false;
       // Зберігаємо обрану дату в атрибуті кнопки
       button.setAttribute("data-endtime", selectedDate.getTime());
-      // Додаємо код для деактивації поля введення
-      input.disabled = true;
     } else {
       // Показуємо повідомлення про помилку
       Notiflix.Notify.failure('Please choose a date in the future');
@@ -97,6 +95,7 @@ function startTimer() {
 
   // Робимо кнопку "Start" неактивною
   button.disabled = true;
+  input.disabled = true;
 
   // Створюємо функцію для виконання на кожному кроці інтервалу
   function step() {
